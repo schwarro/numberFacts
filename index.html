@@ -5,7 +5,7 @@
     <title>Number Facts</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <style>
-      #fact {
+      #fact, #yearFact {
         display: none;
       }
     </style>
@@ -22,6 +22,13 @@
               <h4 class="card-title">Number Fact</h4>
               <p id="factText" class="card-text"></p>
             </div>
+
+            <p class="mt-3">Enter a year and get a random fact</p>
+            <input type="number" class="form-control form-control-lg" id="yearInput" placeholder="Enter any year">
+            <div class="card-body" id="yearFact">
+              <h4 class="card-title">Year Fact</h4>
+              <p id="yearFactText" class="card-text"></p>
+            </div>
           </div>
         </div>
       </div>
@@ -32,6 +39,27 @@
       let factText = document.querySelector("#factText");
       let numberInput = document.querySelector("#numberInput")
       numberInput.addEventListener('input', getFactFetch);
+
+      let yearFact = document.querySelector('#yearFact');
+      let yearFactText = document.querySelector('#yearFactText');
+      let yearInput = document.querySelector("#yearInput");
+      yearInput.addEventListener('input', getYearFactAjax)
+
+      function getYearFactAjax() {
+        let year = yearInput.value;
+
+        let xhr = new XMLHttpRequest();
+        xhr.open('GET', 'http://numbersapi.com/' + year + '/year');
+
+          xhr.onload = function() {
+            if(this.status == 200 && yearInput.value != '') {
+              yearFact.style.display = 'block';
+              console.log(this.responseText);
+              yearFactText.innerText = this.responseText;
+            }
+          }
+        xhr.send();
+      }
 
       // function getFactAjax() {
       //   let number = numberInput.value;
